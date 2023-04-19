@@ -8,7 +8,12 @@ import androidx.navigation.compose.composable
 import org.pytorch.Module
 
 @Composable
-fun Navigation(navController: NavHostController, module: Module, modifier: Modifier) {
+fun Navigation(
+    navController: NavHostController,
+    module: Module,
+    modifier: Modifier,
+    modelName: String
+) {
 
     NavHost(
         navController = navController,
@@ -16,7 +21,7 @@ fun Navigation(navController: NavHostController, module: Module, modifier: Modif
         modifier = modifier
     ) {
         composable(route = Screen.MainScreen.route) {
-            MainScreen(navController = navController)
+            MainScreen(navController = navController, modelName = modelName)
         }
 
         composable(route = Screen.ImageScreen.route) {
