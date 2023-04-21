@@ -20,10 +20,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             ObjectDetectionTheme {
 
-                var moduleName by remember {
-                    mutableStateOf("BasicModel")
+                val moduleName by remember {
+                    mutableStateOf("YOLO v5")
                 }
-                val module: Module = LiteModuleLoader.loadModuleFromAsset(assets, "basicModel.pt")
+                val module: Module = LiteModuleLoader.loadModuleFromAsset(assets, "yolov5s.torchscript.ptl")
                 val navController = rememberNavController()
 
                 Scaffold(topBar = {
