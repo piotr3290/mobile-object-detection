@@ -1,9 +1,18 @@
 package com.example.objectdetection
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,9 +45,7 @@ fun MainScreen(navController: NavHostController, modelName: String) {
             item {
                 FloatingActionButton(
                     shape = MaterialTheme.shapes.large,
-                    onClick = {
-                        navController.navigate(Screen.ImageScreen.route)
-                    },
+                    onClick = { navController.navigate(Screen.ImageScreen.route) },
                     modifier = Modifier
                         .height(100.dp)
                         .width(100.dp)

@@ -72,8 +72,7 @@ fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
-    //val colorScheme = if (!useDarkTheme) LightColors else DarkColors
-    val colorScheme = DarkColors // use dark theme
+    val colorScheme = if (!useDarkTheme) LightColors else DarkColors
     MaterialTheme(
         colorScheme = colorScheme,
         content = content,
