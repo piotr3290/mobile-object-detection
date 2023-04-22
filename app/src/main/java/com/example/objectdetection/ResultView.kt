@@ -13,7 +13,6 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.*
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.toSize
@@ -25,6 +24,7 @@ fun ResultView(
     image: Bitmap,
     results: ArrayList<Result>,
     scale: Float,
+    classes: List<String>,
     srcOffset: IntOffset = IntOffset.Zero,
     srcSize: IntSize = IntSize((image.width * scale).toInt(), (image.height * scale).toInt()),
     imageBitmap: ImageBitmap = image.scale(width = srcSize.width, height = srcSize.height).asImageBitmap(),
@@ -44,7 +44,7 @@ fun ResultView(
 
             for (result in results) {
                 val measuredText =
-                    textMeasurer.measure(AnnotatedString(YoloV5Classes.CLASSES[result.classIndex]))
+                    textMeasurer.measure(AnnotatedString(classes[result.classIndex]))
                 val offset = Offset(result.rect.left.toFloat(), result.rect.top.toFloat())
 
                 drawRect(

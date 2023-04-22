@@ -5,31 +5,29 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import org.pytorch.Module
 
 @Composable
 fun Navigation(
     navController: NavHostController,
-    module: Module,
-    modifier: Modifier,
-    modelName: String
+    model: Model,
+    modifier: Modifier
 ) {
-
     NavHost(
         navController = navController,
         startDestination = Screen.MainScreen.route,
         modifier = modifier
     ) {
         composable(route = Screen.MainScreen.route) {
-            MainScreen(navController = navController, modelName = modelName)
+            MainScreen(navController = navController, model = model)
         }
-
         composable(route = Screen.ImageScreen.route) {
-            ImageScreen(module = module)
+            ImageScreen(model = model)
         }
-
         composable(route = Screen.CameraScreen.route) {
             CameraScreen()
+        }
+        composable(route = Screen.ModelScreen.route) {
+            ModelScreen()
         }
     }
 }

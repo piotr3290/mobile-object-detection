@@ -24,7 +24,7 @@ import org.pytorch.torchvision.TensorImageUtils
 
 @OptIn(ExperimentalTextApi::class)
 @Composable
-fun ImageScreen(module: Module) {
+fun ImageScreen(model: Model) {
     val applicationContext = LocalContext.current
     var selectedImageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -69,7 +69,7 @@ fun ImageScreen(module: Module) {
 
 
                             resultsRemember = recognize(
-                                module = module,
+                                module = model.module,
                                 bitmap = imageBitmap!!,
                                 scale = displayScale
                             )
@@ -92,7 +92,8 @@ fun ImageScreen(module: Module) {
                     ResultView(
                         image = imageBitmap!!,
                         results = resultsRemember,
-                        scale = displayScale
+                        scale = displayScale,
+                        classes = model.classes
                     )
 
                 }
