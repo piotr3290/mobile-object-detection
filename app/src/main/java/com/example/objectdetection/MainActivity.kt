@@ -5,35 +5,44 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
-import com.example.objectdetection.ui.theme.ObjectDetectionTheme
+import com.example.objectdetection.ui.theme.AppTheme
 import org.pytorch.LiteModuleLoader
 import org.pytorch.Module
+
+class Model(name: String, module: Module, classes: List<String>) {
+    var name by mutableStateOf(name)
+    var module by mutableStateOf(module)
+    var classes by mutableStateOf(classes)
+}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
-            ObjectDetectionTheme {
-
-                val moduleName by remember {
-                    mutableStateOf("YOLO v5")
-                }
-                val module: Module = LiteModuleLoader.loadModuleFromAsset(assets, "yolov5s.torchscript.ptl")
+            AppTheme {
                 val navController = rememberNavController()
-
-                Scaffold(topBar = {
-                    AppBar(navController = navController)
-                }) { contentPadding ->
+                val model = remember {
+                    Model(
+                        "YOLOv5",
+                        LiteModuleLoader.loadModuleFromAsset(assets, "yolov5s.torchscript.ptl"),
+                        YoloV5Classes.CLASSES
+                    )
+                }
+                Scaffold(
+                    topBar = { AppBar(navController = navController) }
+                ) { contentPadding ->
                     Navigation(
                         navController = navController,
-                        modifier = Modifier.padding(contentPadding),
-                        module = module,
-                        modelName = moduleName
+                        model = model,
+                        modifier = Modifier.padding(contentPadding)
                     )
                 }
 
@@ -46,7 +55,5 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    ObjectDetectionTheme {
-    }
-
+    AppTheme {}
 }
