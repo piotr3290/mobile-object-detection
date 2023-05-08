@@ -18,7 +18,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.*
 import androidx.compose.ui.unit.dp
 import org.pytorch.IValue
-import org.pytorch.Module
 import org.pytorch.Tensor
 import org.pytorch.torchvision.TensorImageUtils
 
@@ -69,7 +68,7 @@ fun ImageScreen(model: Model) {
 
 
                             resultsRemember = recognize(
-                                module = model.module,
+                                model = model,
                                 bitmap = imageBitmap!!,
                                 scale = displayScale
                             )
@@ -89,11 +88,10 @@ fun ImageScreen(model: Model) {
             item {
                 if (imageBitmap != null) {
 
-                    ResultView(
+                    ImageView(
                         image = imageBitmap!!,
                         results = resultsRemember,
-                        scale = displayScale,
-                        classes = model.classes
+                        scale = displayScale
                     )
 
                 }
@@ -120,10 +118,7 @@ fun ImageScreen(model: Model) {
 
 }
 
-fun recognize(module: Module, bitmap: Bitmap, scale: Float): ArrayList<Result> {
-
-    Log.v("scale", scale.toString())
-
+fun recognize(model: Model, bitmap: Bitmap, scale: Float): ArrayList<Result> {
     val resizedBitmap =
         Bitmap.createScaledBitmap(bitmap, IMAGE_INPUT_WIDTH, IMAGE_INPUT_HEIGHT, true)
 
@@ -133,7 +128,7 @@ fun recognize(module: Module, bitmap: Bitmap, scale: Float): ArrayList<Result> {
         NO_STD_RGB
     )
 
-    val outputTuple = module.forward(IValue.from(inputTensor)).toTuple()
+    val outputTuple = model.module.forward(IValue.from(inputTensor)).toTuple()
 
     val outputTensor: Tensor = outputTuple[0].toTensor()
     val scores: FloatArray = outputTensor.dataAsFloatArray
@@ -145,6 +140,10 @@ fun recognize(module: Module, bitmap: Bitmap, scale: Float): ArrayList<Result> {
 
     val results =
         outputsToNMSPredictions(scores, imgScaleX, imgScaleY, ivScaleX, ivScaleY, 0.0f, 0.0f)
+
+    results.forEach {
+        it.classLabel = model.classes[it.classIndex]
+    }
 
     Log.v("results", results.toString())
 

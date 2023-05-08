@@ -6,22 +6,12 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.objectdetection.ui.theme.AppTheme
 import org.pytorch.LiteModuleLoader
-import org.pytorch.Module
-
-class Model(name: String, module: Module, classes: List<String>) {
-    var name by mutableStateOf(name)
-    var module by mutableStateOf(module)
-    var classes by mutableStateOf(classes)
-}
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

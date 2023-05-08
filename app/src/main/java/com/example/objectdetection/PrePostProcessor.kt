@@ -18,6 +18,7 @@ const val NMS_LIMIT = 15 // non-maximum suppression
 
 fun nonMaxSuppression(boxes: ArrayList<Result>, limit: Int, threshold: Float): ArrayList<Result> {
     boxes.sort()
+    boxes.reverse()
 
     val selectedResults = ArrayList<Result>()
     val active = BooleanArray(boxes.size)
@@ -38,7 +39,7 @@ fun nonMaxSuppression(boxes: ArrayList<Result>, limit: Int, threshold: Float): A
             for (j in i + 1 until boxes.size) {
                 if (active[j]) {
                     val boxB = boxes[j]
-                    if (intersectionOverUnion(boxB.rect, boxB.rect) > threshold) {
+                    if (intersectionOverUnion(boxA.rect, boxB.rect) > threshold) {
                         active[j] = false
                         numActive -= 1
                         if (numActive <= 0) {
