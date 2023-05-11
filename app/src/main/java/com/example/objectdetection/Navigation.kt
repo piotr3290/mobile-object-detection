@@ -24,7 +24,7 @@ fun Navigation(
             ImageScreen(model = model)
         }
         composable(route = Screen.CameraScreen.route) {
-            CameraScreen()
+            CameraScreen(model = model)
         }
         composable(route = Screen.ModelScreen.route) {
             ModelScreen()
