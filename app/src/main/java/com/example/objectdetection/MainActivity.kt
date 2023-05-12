@@ -6,6 +6,9 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -19,11 +22,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 val navController = rememberNavController()
-                val model = remember {
-                    Model(
-                        "YOLOv5",
-                        LiteModuleLoader.loadModuleFromAsset(assets, "yolov5s.torchscript.ptl"),
-                        YoloV5Classes.CLASSES
+                var model by remember {
+                    mutableStateOf(
+                        Model(
+                            LiteModuleLoader.loadModuleFromAsset(assets, YOLOv5.assetName),
+                            YOLOv5
+                        )
                     )
                 }
                 Scaffold(
@@ -32,7 +36,13 @@ class MainActivity : ComponentActivity() {
                     Navigation(
                         navController = navController,
                         model = model,
-                        modifier = Modifier.padding(contentPadding)
+                        modifier = Modifier.padding(contentPadding),
+                        onModelChange = {
+                            model = Model(
+                                LiteModuleLoader.loadModuleFromAsset(assets, it.assetName),
+                                it
+                            )
+                        }
                     )
                 }
 

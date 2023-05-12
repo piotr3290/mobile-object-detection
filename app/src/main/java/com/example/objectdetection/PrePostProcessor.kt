@@ -8,11 +8,7 @@ import kotlin.math.min
 
 val NO_MEAN_RGB = floatArrayOf(0.0f, 0.0f, 0.0f)
 val NO_STD_RGB = floatArrayOf(1.0f, 1.0f, 1.0f)
-const val IMAGE_INPUT_WIDTH = 640
-const val IMAGE_INPUT_HEIGHT = 640
 
-const val OUTPUT_ROWS = 25200
-const val OUTPUT_COLUMNS = 85
 const val THRESHOLD = 0.30f
 const val NMS_LIMIT = 15 // non-maximum suppression
 
@@ -81,28 +77,29 @@ fun outputsToNMSPredictions(
     ivScaleX: Float,
     ivScaleY: Float,
     startX: Float,
-    startY: Float
+    startY: Float,
+    model: Model
 ): ArrayList<Result> {
     val results = ArrayList<Result>()
 
-    for (i in 0 until OUTPUT_ROWS) {
-        if (outputs[i * OUTPUT_COLUMNS + 4] > THRESHOLD) {
-            val x = outputs[i * OUTPUT_COLUMNS]
-            val y = outputs[i * OUTPUT_COLUMNS + 1]
-            val width = outputs[i * OUTPUT_COLUMNS + 2]
-            val height = outputs[i * OUTPUT_COLUMNS + 3]
+    for (i in 0 until model.outputRows) {
+        if (outputs[i * model.outputColumns + 4] > THRESHOLD) {
+            val x = outputs[i * model.outputColumns]
+            val y = outputs[i * model.outputColumns + 1]
+            val width = outputs[i * model.outputColumns + 2]
+            val height = outputs[i * model.outputColumns + 3]
 
             val left = imgScaleX * (x - width / 2)
             val top = imgScaleY * (y - height / 2)
             val right = imgScaleX * (x + width / 2)
             val bottom = imgScaleY * (y + height / 2)
 
-            var maxValue = outputs[i * OUTPUT_COLUMNS + 5]
+            var maxValue = outputs[i * model.outputColumns + 5]
             var classIndex = 0
 
-            for (j in 0 until OUTPUT_COLUMNS - 5) {
-                if (outputs[i * OUTPUT_COLUMNS + 5 + j] > maxValue) {
-                    maxValue = outputs[i * OUTPUT_COLUMNS + 5 + j]
+            for (j in 0 until model.outputColumns - 5) {
+                if (outputs[i * model.outputColumns + 5 + j] > maxValue) {
+                    maxValue = outputs[i * model.outputColumns + 5 + j]
                     classIndex = j
                 }
             }
@@ -114,7 +111,7 @@ fun outputsToNMSPredictions(
                 (startY + ivScaleY * bottom).toInt()
             )
 
-            val result = Result(classIndex, outputs[i * OUTPUT_COLUMNS + 4], rect)
+            val result = Result(classIndex, outputs[i * model.outputColumns + 4], rect)
             results.add(result)
         }
     }
