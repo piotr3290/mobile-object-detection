@@ -10,7 +10,8 @@ import androidx.navigation.compose.composable
 fun Navigation(
     navController: NavHostController,
     model: Model,
-    modifier: Modifier
+    modifier: Modifier,
+    onModelChange: (ModelParams) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -27,7 +28,7 @@ fun Navigation(
             CameraScreen(model = model)
         }
         composable(route = Screen.ModelScreen.route) {
-            ModelScreen()
+            ModelScreen(model, onModelChange)
         }
     }
 }

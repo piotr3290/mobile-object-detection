@@ -120,7 +120,7 @@ fun ImageScreen(model: Model) {
 
 fun recognize(model: Model, bitmap: Bitmap, scale: Float): ArrayList<Result> {
     val resizedBitmap =
-        Bitmap.createScaledBitmap(bitmap, IMAGE_INPUT_WIDTH, IMAGE_INPUT_HEIGHT, true)
+        Bitmap.createScaledBitmap(bitmap, model.imageInputWidth, model.imageInputHeight, true)
 
     val inputTensor: Tensor = TensorImageUtils.bitmapToFloat32Tensor(
         resizedBitmap,
@@ -133,13 +133,13 @@ fun recognize(model: Model, bitmap: Bitmap, scale: Float): ArrayList<Result> {
     val outputTensor: Tensor = outputTuple[0].toTensor()
     val scores: FloatArray = outputTensor.dataAsFloatArray
 
-    val imgScaleX: Float = (bitmap.width.toFloat() / IMAGE_INPUT_WIDTH.toFloat())
-    val imgScaleY: Float = (bitmap.height.toFloat() / IMAGE_INPUT_HEIGHT.toFloat())
+    val imgScaleX: Float = (bitmap.width.toFloat() / model.imageInputWidth.toFloat())
+    val imgScaleY: Float = (bitmap.height.toFloat() / model.imageInputHeight.toFloat())
     val ivScaleX: Float = scale
     val ivScaleY: Float = scale
 
     val results =
-        outputsToNMSPredictions(scores, imgScaleX, imgScaleY, ivScaleX, ivScaleY, 0.0f, 0.0f)
+        outputsToNMSPredictions(scores, imgScaleX, imgScaleY, ivScaleX, ivScaleY, 0.0f, 0.0f, model)
 
     results.forEach {
         it.classLabel = model.classes[it.classIndex]
