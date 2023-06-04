@@ -12,7 +12,17 @@ sealed class ModelParams(
 object YOLOv5 : ModelParams(
     "YOLOv5",
     "yolov5s.torchscript.ptl",
-    YoloV5Classes.CLASSES,
+    YoloClasses.CLASSES,
+    640,
+    640,
+    25200,
+    85
+)
+
+object YOLOv7 : ModelParams(
+    "YOLOv7",
+    "yolov7.torchscript.ptl",
+    YoloClasses.CLASSES,
     640,
     640,
     25200,

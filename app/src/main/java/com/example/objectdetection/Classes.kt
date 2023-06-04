@@ -1005,7 +1005,7 @@ object Classes {
     )
 }
 
-object YoloV5Classes {
+object YoloClasses {
     val CLASSES: List<String> = listOf(
         "person",
         "bicycle",
