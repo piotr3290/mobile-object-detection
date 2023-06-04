@@ -10,7 +10,7 @@ fun ModelScreen(
     selectedModel: Model,
     onModelSelected: (ModelParams) -> Unit
 ) {
-    val models = listOf<ModelParams>(YOLOv5)
+    val models = listOf<ModelParams>(YOLOv5, YOLOv7)
 
     fun selectModel(modelParams: ModelParams) {
         onModelSelected(modelParams)
